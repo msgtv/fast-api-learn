@@ -2,3 +2,7 @@ sqlalchemy
 alembic
 asyncpg
 pydantic-settings
+pydantic[email]
+uvicorn
+python-jose
+passlib

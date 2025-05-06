@@ -57,19 +57,6 @@ def get_hotels(
     return hotels
 
 
-class Booking(BaseModel):
-    room_id: int
-    date_from: date
-    date_to: date
-
-
-@app.post("/bookings")
-def add_booking(
-        booking: Booking,
-):
-    return f"You posted: Room #{booking.room_id}, dates from {booking.date_from} to {booking.date_to}"
-
-
 @app.get("/hotels/{location}")
 def get_hotels(
         location: str,
