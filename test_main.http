@@ -1,0 +1,11 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8801/
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8801/hotels/moscow?date_from=2020-01-01&date_to=2021-01-01
+Accept: application/json
+
+###
