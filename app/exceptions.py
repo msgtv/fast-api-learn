@@ -1,36 +1,25 @@
 from fastapi import HTTPException, status
 
 
-UserAlreadyExists = HTTPException(
-    status_code=status.HTTP_409_CONFLICT,
-    detail="User already exists",
-)
+class UnauthorizedError(HTTPException):
+    status_code=status.HTTP_401_UNAUTHORIZED
 
 
-IncorrectEmailOrPassword = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Incorrect email or password",
-)
+class UserAlreadyExists(UnauthorizedError):
+    detail="User already exists"
 
 
-TokenExpiredError = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Token is expired",
-)
+class IncorrectEmailOrPassword(UnauthorizedError):
+    detail="Incorrect email or password"
 
 
-TokenAbsentError = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Token is invalid",
-)
+class TokenExpiredError(UnauthorizedError):
+    detail="Token is expired"
 
 
-IncorrectTokenFormatError = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Incorrect token format",
-)
+class TokenAbsentError(UnauthorizedError):
+    detail="Token is invalid"
 
 
-UnauthorizedError = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-)
+class IncorrectTokenFormatError(UnauthorizedError):
+    detail="Incorrect token format"
