@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Response, Depends
 
-from app.exceptions import UserAlreadyExists, IncorrectEmailOrPassword
+from app.users.exceptions import UserAlreadyExists, IncorrectEmailOrPassword
 from app.users.dao import UsersDAO
 from app.users.dependencies import get_current_user, get_admin_user
 from app.users.models import Users

@@ -1,11 +1,11 @@
 from datetime import date
 from typing import List
 
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends
 
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking
-from app.exceptions import RoomCannotBooked
+from app.bookings.exceptions import RoomCannotBooked
 from app.users.dependencies import get_current_user
 from app.users.models import Users
 
@@ -40,3 +40,5 @@ async def add_booking(
         raise RoomCannotBooked()
 
     return booking
+
+# TODO: route на удаление бронирования

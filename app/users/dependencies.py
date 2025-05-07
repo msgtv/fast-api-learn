@@ -5,7 +5,7 @@ from fastapi.params import Depends
 from jose import JWTError, jwt
 
 from app.config import settings
-from app.exceptions import TokenExpiredError, TokenAbsentError, IncorrectTokenFormatError, UnauthorizedError
+from app.users.exceptions import TokenExpiredError, TokenAbsentError, IncorrectTokenFormatError, UnauthorizedError
 from app.users.dao import UsersDAO
 from app.users.models import Users
 
