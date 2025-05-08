@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, HTTPException
 
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking
@@ -41,4 +41,16 @@ async def add_booking(
 
     return booking
 
-# TODO: route на удаление бронирования
+@router.delete("/{booking_id}")
+async def delete_booking(
+        booking_id: int,
+        user: Users = Depends(get_current_user),
+):
+    deleted_booking = await BookingDAO.delete(
+        user_id=user.id,
+        booking_id=booking_id,
+    )
+
+    if deleted_booking:
+        return Response(status_code=204)
+    raise HTTPException(status_code=404)

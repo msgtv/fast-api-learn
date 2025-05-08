@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import select, and_, or_, func, insert
+from sqlalchemy import select, insert, delete, and_, or_, func
 
 from app.bookings.models import Bookings
 from app.dao.base import BaseDAO
@@ -68,12 +68,12 @@ class BookingDAO(BaseDAO):
 
             get_rooms_left = (
                 select(
-                    (Rooms.quantity - func.count(booked_rooms.c.room_id)).label("rooms_left")
+                    (Rooms.quantity - func.count(booked_rooms.c.room_id)).label("rooms_left"),
                 )
                 .select_from(Rooms)
                 .join(
                     booked_rooms,
-                    booked_rooms.c.room_id == Rooms.id,
+                    Rooms.id == booked_rooms.c.room_id,
                     isouter=True,
                 )
                 .where(Rooms.id == room_id)
@@ -92,7 +92,8 @@ class BookingDAO(BaseDAO):
                     .filter_by(id=room_id)
                 )
 
-                price: int = await session.execute(get_price).scalar()
+                price = await session.execute(get_price)
+                price = price.scalar()
 
                 add_booking = (
                     insert(Bookings)
@@ -112,3 +113,27 @@ class BookingDAO(BaseDAO):
                 return new_booking.scalar()
             else:
                 return None
+
+    @classmethod
+    async def delete(
+            cls,
+            user_id: int,
+            booking_id: int,
+    ):
+        async with async_session_maker() as session:
+            delete_booking = (
+                delete(Bookings)
+                .where(
+                    and_(
+                        Bookings.user_id == user_id,
+                        Bookings.id == booking_id,
+                    )
+                ).returning(Bookings.id)
+            )
+
+            deleted_booking = await session.execute(delete_booking)
+            deleted_booking = deleted_booking.scalar()
+
+            await session.commit()
+
+            return deleted_booking
