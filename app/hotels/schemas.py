@@ -1,5 +1,7 @@
+from datetime import date, datetime
 from typing import List
 
+from fastapi.params import Query
 from pydantic import BaseModel
 
 
@@ -17,6 +19,18 @@ from pydantic import BaseModel
 #         self.date_to = date_to
 #         self.stars = stars
 #         self.has_spa = has_spa
+
+
+class SHotelsSearchArgs:
+    def __init__(
+            self,
+            location: str,
+            date_from: date = Query(None, description=f'Например, {datetime.now().date()}'),
+            date_to: date = Query(None, description=f'Например, {datetime.now().date()}'),
+    ):
+        self.location = location
+        self.date_from = date_from
+        self.date_to = date_to
 
 
 class SHotel(BaseModel):

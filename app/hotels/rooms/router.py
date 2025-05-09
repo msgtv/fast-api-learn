@@ -7,7 +7,6 @@ from app.hotels.rooms.schemas import SRoomWithLeft, SRoom
 from app.hotels.router import router
 
 
-# TODO: route на получение списка комнат по отелю
 @router.get('/{hotel_id}/rooms')
 async def get_rooms(
         hotel_id: int,

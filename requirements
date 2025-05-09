@@ -7,3 +7,7 @@ uvicorn
 python-jose
 passlib
 fastapi
+jinja2
+python-multipart
+fastapi-cache2[redis]
+redis

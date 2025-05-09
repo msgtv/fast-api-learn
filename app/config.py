@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
 
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_USER: str
+    REDIS_PASSWORD: str
+    REDIS_USER_PASSWORD: str
+
     DB_URL: Optional[str] = None
 
     @model_validator(mode='after')

@@ -1,11 +1,11 @@
 from datetime import date
 from typing import List, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.hotels.dao import HotelsDAO
 from app.hotels.exceptions import NoDateSetException, HotelNotFoundException
-from app.hotels.schemas import SHotelWithRoomsLeft, SHotel
+from app.hotels.schemas import SHotelWithRoomsLeft, SHotel, SHotelsSearchArgs
 
 router = APIRouter(
     prefix="/hotels",
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get('/{hotel_id}')
+@router.get('/{hotel_id}', operation_id='get_hotel_by_id')
 async def get_hotel(hotel_id: int) -> SHotel:
     hotel = await HotelsDAO.get_by_id(hotel_id)
     if hotel:
@@ -23,18 +23,16 @@ async def get_hotel(hotel_id: int) -> SHotel:
 
 @router.get("/{location}")
 async def get_hotels_by_location(
-        location: str,
-        date_from: Optional[date] = None,
-        date_to: Optional[date] = None,
+        args: SHotelsSearchArgs = Depends(),
 ) -> List[SHotelWithRoomsLeft|SHotel]:
-    if date_from and date_to:
+    if args.date_from and args.date_to:
         hotels = await HotelsDAO.get_hotels_by_location_rooms_left(
-            location, date_from, date_to
+            args.location, args.date_from, args.date_to
         )
-    elif not (date_from or date_to):
-        hotels = await HotelsDAO.get_hotels_by_location(location=location)
+    elif not (args.date_from or args.date_to):
+        hotels = await HotelsDAO.get_hotels_by_location(location=args.location)
     else:
-        if not date_from:
+        if not args.date_from:
             raise NoDateSetException(date_type='Date From')
         else:
             raise NoDateSetException(date_type='Date To')
