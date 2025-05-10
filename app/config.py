@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
     REDIS_USER_PASSWORD: str
 
+    SMTP_HOST: str
+    SMTP_PORT: int
+    SMTP_USER: str
+    SMTP_PASSWORD: str
+
     DB_URL: Optional[str] = None
 
     @model_validator(mode='after')

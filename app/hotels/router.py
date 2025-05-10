@@ -1,7 +1,9 @@
+import asyncio
 from datetime import date
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
 
 from app.hotels.dao import HotelsDAO
 from app.hotels.exceptions import NoDateSetException, HotelNotFoundException
@@ -13,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('/{hotel_id}', operation_id='get_hotel_by_id')
+@router.get('/id/{hotel_id}', operation_id='get_hotel_by_id')
 async def get_hotel(hotel_id: int) -> SHotel:
     hotel = await HotelsDAO.get_by_id(hotel_id)
     if hotel:
@@ -22,6 +24,7 @@ async def get_hotel(hotel_id: int) -> SHotel:
 
 
 @router.get("/{location}")
+@cache(expire=20)
 async def get_hotels_by_location(
         args: SHotelsSearchArgs = Depends(),
 ) -> List[SHotelWithRoomsLeft|SHotel]:
