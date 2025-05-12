@@ -5,6 +5,7 @@ from sqlalchemy import (
     Date,
     Computed,
 )
+from sqlalchemy.orm import relationship
 
 from app.database import Base
 
@@ -23,3 +24,8 @@ class Bookings(Base):
 
     total_days = Column(Integer, Computed("date_to - date_from"))
     total_cost = Column(Integer, Computed("(date_to - date_from) * price"))
+
+    user = relationship("Users", back_populates="bookings")
+
+    def __str__(self):
+        return f"Booking #{self.id}"

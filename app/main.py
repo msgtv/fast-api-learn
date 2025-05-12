@@ -1,23 +1,31 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Query, Depends
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.decorator import cache
+
+from sqladmin import Admin
 
 from redis import asyncio as aioredis
 
+from app.admin.auth import authentication_backend
 from app.config import settings
+from app.database import engine
 from app.users.router import router as user_router
 from app.bookings.router import router as booking_router
 from app.hotels.router import router as hotel_router
-from app.hotels.rooms.router import router as room_router
 from app.pages.router import router as page_router
 from app.images.router import router as image_router
+from app.admin import (
+    UserAdmin,
+    BookingAdmin,
+    RoomAdmin,
+    HotelAdmin,
+)
 
 
 @asynccontextmanager
@@ -67,3 +75,11 @@ app.add_middleware(
         "Access-Control-Allow-Authorization",
     ],
 )
+
+
+admin = Admin(app, engine=engine, authentication_backend=authentication_backend)
+
+admin.add_view(UserAdmin)
+admin.add_view(BookingAdmin)
+admin.add_view(RoomAdmin)
+admin.add_view(HotelAdmin)

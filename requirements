@@ -14,3 +14,5 @@ redis
 celery
 flower
 pillow
+sqladmin
+itsdangerous

@@ -44,9 +44,8 @@ async def add_booking(
 
     # booking_data = parse_obj_as(SBooking, booking).dict()
     booking_data = pydantic.TypeAdapter(SBooking).validate_python(booking).model_dump(mode='json')
-    print(booking_data)
+    # print(booking_data)
     send_confirmation_email.delay(booking_data, user.email)
-
 
     return booking
 

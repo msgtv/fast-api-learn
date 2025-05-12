@@ -32,9 +32,11 @@ def send_confirmation_email(
         email_to,
     )
 
-    with smtplib.SMTP_SSL(
-        host=settings.SMTP_HOST,
-        port=settings.SMTP_PORT,
-    ) as server:
-        server.login(user=settings.SMTP_USER, password=settings.SMTP_PASSWORD)
-        server.send_message(msg_content)
+    print('message sended: {msg}'.format(msg=msg_content))
+
+    # with smtplib.SMTP_SSL(
+    #     host=settings.SMTP_HOST,
+    #     port=settings.SMTP_PORT,
+    # ) as server:
+    #     server.login(user=settings.SMTP_USER, password=settings.SMTP_PASSWORD)
+    #     server.send_message(msg_content)
