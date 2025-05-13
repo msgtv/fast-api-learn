@@ -16,3 +16,6 @@ flower
 pillow
 sqladmin
 itsdangerous
+pytest
+pytest-asyncio
+httpx

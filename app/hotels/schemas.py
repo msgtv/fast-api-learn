@@ -2,7 +2,7 @@ from datetime import date, datetime
 from typing import List
 
 from fastapi.params import Query
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 # class HotelsSearchArgs:
@@ -34,15 +34,14 @@ class SHotelsSearchArgs:
 
 
 class SHotel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     location: str
     services: List[str]
     rooms_quantity: int
     image_id: int
-
-    class Config:
-        from_attributes = True
 
 
 class SHotelWithRoomsLeft(BaseModel):
